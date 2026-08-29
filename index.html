@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Study &mdash; Chess &amp; Tic-Tac-Toe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="room">
+
+  <header class="room__header">
+    <h1 class="room__title">The Study</h1>
+    <p class="room__subtitle">Two boards. Play the house, or pull up a second chair.</p>
+  </header>
+
+  <!-- =========================== HOME SCREEN =========================== -->
+  <section class="screen" id="screenHome">
+    <div class="home-grid">
+
+      <div class="home-block">
+        <h2 class="ledger__heading">Choose your game</h2>
+        <div class="choice-row">
+          <button class="choice-btn is-active" data-choice="game" data-value="chess">&#9812; Chess</button>
+          <button class="choice-btn" data-choice="game" data-value="ttt">&#10005; Tic&#8209;Tac&#8209;Toe</button>
+        </div>
+      </div>
+
+      <div class="home-block">
+        <h2 class="ledger__heading">Choose your mode</h2>
+        <div class="choice-row">
+          <button class="choice-btn is-active" data-choice="mode" data-value="ai">Vs. the House</button>
+          <button class="choice-btn" data-choice="mode" data-value="2p">Two Players</button>
+        </div>
+      </div>
+
+      <div class="home-block" id="aiSetupBlock">
+        <h2 class="ledger__heading">House rules</h2>
+
+        <div id="chessAiSetup">
+          <label class="ledger__field">
+            Play as
+            <select id="chessSide">
+              <option value="w">White</option>
+              <option value="b">Black</option>
+            </select>
+          </label>
+          <label class="ledger__field">
+            Opponent strength
+            <select id="chessDifficulty">
+              <option value="1">Casual</option>
+              <option value="2" selected>Club player</option>
+              <option value="3">Sharp</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="tttAiSetup" class="is-hidden">
+          <label class="ledger__field">
+            Play as
+            <select id="tttSide">
+              <option value="X">X (first)</option>
+              <option value="O">O (second)</option>
+            </select>
+          </label>
+          <label class="ledger__field">
+            Opponent strength
+            <select id="tttDifficulty">
+              <option value="easy">Distracted</option>
+              <option value="hard" selected>Unbeatable</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="home-block is-hidden" id="twoPlayerNote">
+        <h2 class="ledger__heading">Two players, one board</h2>
+        <p class="note-text" id="twoPlayerNoteText">Player 1 takes White, Player 2 takes Black. Pass the board between turns.</p>
+      </div>
+
+      <button class="btn btn--brass btn--large" id="enterStudyBtn">Enter the Study &rarr;</button>
+    </div>
+
+    <div class="home-block history-block">
+      <div class="history-head">
+        <h2 class="ledger__heading">Past Games</h2>
+        <button class="btn-link" id="clearHistoryBtn">Clear history</button>
+      </div>
+      <ol class="history-list" id="historyList"></ol>
+    </div>
+  </section>
+
+  <!-- =========================== CHESS SCREEN =========================== -->
+  <section class="screen is-hidden" id="screenChess">
+    <div class="panel-topbar">
+      <button class="btn-link" id="chessBackBtn">&larr; Back to Study</button>
+      <button class="btn btn--brass btn--small" id="chessRematchBtn">Rematch</button>
+    </div>
+
+    <main class="table">
+      <div class="game-panel">
+        <div class="board-wrap">
+          <div class="rank-labels" id="chessRanks"></div>
+          <div id="chessBoard" class="chess-board" role="grid" aria-label="Chess board"></div>
+          <div class="file-labels" id="chessFiles"></div>
+        </div>
+
+        <aside class="ledger">
+          <div class="ledger__block">
+            <h2 class="ledger__heading">Status</h2>
+            <p class="ledger__status" id="chessStatus">White to move.</p>
+          </div>
+
+          <div class="ledger__block">
+            <h2 class="ledger__heading">Captured</h2>
+            <div class="captured-row">
+              <span class="captured-label">White has taken</span>
+              <span class="captured-pieces" id="chessCapturedByWhite"></span>
+            </div>
+            <div class="captured-row">
+              <span class="captured-label">Black has taken</span>
+              <span class="captured-pieces" id="chessCapturedByBlack"></span>
+            </div>
+          </div>
+
+          <div class="ledger__block">
+            <h2 class="ledger__heading">Move log</h2>
+            <ol class="movelog" id="chessMoveLog"></ol>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </section>
+
+  <!-- =========================== TIC-TAC-TOE SCREEN =========================== -->
+  <section class="screen is-hidden" id="screenTtt">
+    <div class="panel-topbar">
+      <button class="btn-link" id="tttBackBtn">&larr; Back to Study</button>
+      <button class="btn btn--brass btn--small" id="tttRematchBtn">Rematch</button>
+    </div>
+
+    <main class="table">
+      <div class="game-panel">
+        <div class="chalkboard">
+          <svg width="0" height="0">
+            <filter id="chalkFilter">
+              <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="noise"/>
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="3"/>
+            </filter>
+          </svg>
+          <div class="ttt-grid" id="tttGrid"></div>
+        </div>
+
+        <aside class="ledger">
+          <div class="ledger__block">
+            <h2 class="ledger__heading">Status</h2>
+            <p class="ledger__status" id="tttStatus">Your move.</p>
+          </div>
+
+          <div class="ledger__block">
+            <h2 class="ledger__heading">Score</h2>
+            <div class="captured-row"><span class="captured-label" id="tttLabelX">X</span><span id="tttScoreX">0</span></div>
+            <div class="captured-row"><span class="captured-label" id="tttLabelO">O</span><span id="tttScoreO">0</span></div>
+            <div class="captured-row"><span class="captured-label">Draws</span><span id="tttScoreDraw">0</span></div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </section>
+
+  <footer class="room__footer">Carved from HTML, CSS &amp; JavaScript &mdash; no server, no network, just whoever's at the table.</footer>
+</div>
+
+<script src="chess.js"></script>
+<script src="tictactoe.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
